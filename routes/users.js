@@ -5,7 +5,7 @@ var LocalStrategy = require('passport-local').Strategy;
 
 var User = require('../models/user');
 var Student = require('../models/student');
-var Instructor = require('../models/instructor;')
+var Instructor = require('../models/instructor')
 
 //User Register
 router.get('/register', function(req, res, next) {
@@ -26,6 +26,72 @@ router.post('/register', function(req, res, next) {
   var type = req.body.type;
 
   //Form Validation
+  req.checkBody('first_name', 'First name field is required').notEmpty();
+  req.checkBody('last_name', 'Last name field is required').notEmpty();
+  req.checkBody('email', 'Email field is required').notEmpty();
+  req.checkBody('email', 'Email field is required').isEmail();
+  req.checkBody('username', 'Username field is required').notEmpty();
+  req.checkBody('password', 'Password field is required').notEmpty();
+  req.checkBody('password2', 'Passwords do not match').equals(req.body.password);
+
+  errors = req.validationErrors();
+
+  if (errors){
+    res.render('users/register', {
+      errors: errors
+    });
+  } else {
+    var newUser = new User({
+      email: email,
+      username: username,
+      password: password,
+      type: type
+    });
+
+    if (type == 'student') {
+      console.log('Registering student');
+
+      var newStudent = new Student({
+        first_name: first_name,
+        last_name: last_name,
+        address: [{
+          street_address: street_address,
+          city: city,
+          state: state,
+          zip: zip
+        }],
+        email: email,
+        username: username
+      })
+
+      User.saveStudent(newUser, newStudent, function(err, user){
+        console.log('Student created');
+      });
+    } else {
+      console.log('Registering instructor');
+
+      var newInstructor = new Instructor({
+        first_name: first_name,
+        last_name: last_name,
+        address: [{
+          street_address: street_address,
+          city: city,
+          state: state,
+          zip: zip
+        }],
+        email: email,
+        username: username
+      })
+
+      User.saveInstructor(newUser, newInstructor, function(err, user){
+        console.log('Instructor created');
+      });
+    }
+
+    req.flash('success', 'User Added');
+    res.redirect('/');
+  }
+
 });
 
 module.exports = router;
