@@ -25,39 +25,11 @@
 	</div>
 
 	<div class="col_3">
-	<h5>Student & Instructor Login</h5>
-  <form class="" action="index.html" method="post">
-    <label>Username: </label>
-    <input type="text" name="name" value="Enter Username">
-    <label>Password: </label>
-    <input type="password" name="password" value="Enter Password">
-    <input type="submit" name="submit" value="Submit" class="button">
-  </form>
-
+		{{>login}}
 	</div>
 
 	<hr />
-
-	<div class="col_4">
-	<h4>Node 101</h4>
-	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-	magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis</p>
-  <a href="#" class="button">View Class</a>
-	</div>
-
-	<div class="col_4">
-	<h4>MongoDB Basics</h4>
-	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-	magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis</p>
-  <a href="#" class="button">View Class</a>
-	</div>
-
-	<div class="col_4">
-	<h4>Learn Express</h4>
-	<p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
-	magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis</p>
-  <a href="#" class="button">View Class</a>
-	</div>
+	{{>classes}}
 </div>
 
 </div><!-- END GRID -->
