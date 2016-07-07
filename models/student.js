@@ -28,3 +28,8 @@ var StudentSchema = mongoose.Schema({
 
 //Setting variable to be available outside of this file
 var Student = module.exports = mongoose.model('Student', StudentSchema);
+
+module.exports.getStudentByUsername = function(username, callback){
+  var query = {username: username};
+  Student.findOne(query, callback);
+}

@@ -88,10 +88,60 @@ router.post('/register', function(req, res, next) {
       });
     }
 
-    req.flash('success', 'User Added');
+    req.flash('success_msg', 'User Added');
     res.redirect('/');
   }
 
+});
+
+passport.serializeUser(function(user, done){
+  done(null, user._id);
+});
+
+passport.deserializeUser(function(id, done){
+  User.getUserById(id, function(err, user){
+    done(err, user);
+  });
+});
+
+
+
+router.post('/login', passport.authenticate('local', {failureRedirect:'/', failureFlash: true}), function(req, res, next) {
+  req.flash('success_msg', 'You are now logged in. Enjoy!');
+
+  var userType = req.user.type;
+  res.redirect('/'+userType+'s/classes');
+
+});
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.getUserByUsername(username, function(err, user){
+      if (err) throw err;
+      if (!user){
+        return done(null, false, { message: 'Unknown user ' + username });
+      }
+
+      User.comparePassword(password, user.password, function(err, isMatch){
+        if (err) return done(err);
+        if (isMatch) {
+          return done(null, user);
+        } else {
+          console.log('Invalid Password');
+
+          return done(null, false, { message: 'Invalid password' });
+        }
+      });
+    });
+  }
+));
+
+
+//Log Out User
+router.get('/logout', function(req, res){
+  req.logout();
+  req.flash('success_msg', 'You have logged out. Come back soon!');
+  res.redirect('/');
 });
 
 module.exports = router;
