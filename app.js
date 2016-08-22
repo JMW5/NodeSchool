@@ -124,5 +124,9 @@ app.use(function(err, req, res, next) {
   });
 });
 
+app.listen(5000, function(){
+  console.log("Server is running on Port 5000, Enjoy!");
+})
+
 
 module.exports = app;
